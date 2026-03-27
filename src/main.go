@@ -16,4 +16,5 @@ func main() {
 	app.Settings().SetTheme(theme.DefaultTheme())
 	app.SetIcon(iconResource)
 
+	w
 }
