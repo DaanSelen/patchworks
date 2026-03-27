@@ -1,0 +1,3 @@
+[submodule "meshbook"]
+	path = meshbook
+	url = https://github.com/DaanSelen/meshbook
