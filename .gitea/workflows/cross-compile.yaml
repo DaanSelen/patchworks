@@ -136,6 +136,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: linux-bin
+          path: ./bin
 
       - name: Setup the Go programming language
         uses: actions/setup-go@v6
@@ -188,6 +189,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: windows-bin
+          path: ./bin
 
       - name: Setup the Go programming language
         uses: actions/setup-go@v6
