@@ -8,24 +8,18 @@ import (
 	"fyne.io/fyne/v2/layout"
 	"fyne.io/fyne/v2/widget"
 
+	runner "patchworks/src/modules/runner"
 	tasks "patchworks/src/modules/tasks"
 )
 
-func MakeInputContainer(userEntry, passEntry, targEntry *widget.Entry, book *string, win fyne.Window) *fyne.Container {
+func MakeInput(targEntry *widget.Entry, book *string) *fyne.Container {
 	availBooks, err := tasks.ListAvailableBooks()
 	if err != nil {
 		log.Println("failed to read available books on disk")
 	}
 
-	loginBox := container.NewVBox(
-		widget.NewLabel("MeshCentral Username"),
-		userEntry,
-		widget.NewLabel("MeshCentral Password"),
-		passEntry,
-	)
-
 	targetBox := container.NewVBox(
-		widget.NewLabel("MeshCentral Target Device or Group"),
+		widget.NewLabel("MeshCentral Target Group"),
 		targEntry,
 	)
 
@@ -51,15 +45,46 @@ func MakeInputContainer(userEntry, passEntry, targEntry *widget.Entry, book *str
 	)
 
 	inputBox := container.New(
-		layout.NewGridLayoutWithColumns(3),
-		loginBox,  // column 1
-		targetBox, // column 2
-		bookBox,   // column 3
+		layout.NewGridLayoutWithColumns(2),
+		targetBox, // column 1
+		bookBox,   // column 2
 	)
-
 	return inputBox
 }
 
-func MakeInfoContainer(book *string) *fyne.Container {
+func MakeFooter(targEntry *widget.Entry, book *string, app fyne.App) *fyne.Container {
+	actionBtn := widget.NewButton("Execute", func() {
+		log.Println("Beginning execution with external binary")
 
+		ok, path := runner.FindMeshbookBinary()
+		if !ok {
+			log.Println("something went wrong while looking for the binary, see above for details")
+		}
+		ok, result := runner.RunMeshbook(path, *book, targEntry.Text)
+		if !ok {
+			log.Println("something went wrong while running the meshbook, see above for details")
+		}
+		log.Println(result)
+
+	})
+	actionWrap := container.NewGridWrap(
+		buttonSize,
+		actionBtn,
+	)
+
+	cancelBtn := widget.NewButton("Exit", func() {
+		log.Println("Quitting")
+		app.Quit()
+	})
+	cancelWrap := container.NewGridWrap(
+		buttonSize,
+		cancelBtn,
+	)
+
+	bottomBox := container.NewHBox(
+		actionWrap,         // left
+		layout.NewSpacer(), // flexible space
+		cancelWrap,         // right
+	)
+	return bottomBox
 }

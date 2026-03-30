@@ -33,22 +33,20 @@ func main() {
 	w := app.NewWindow("PatchWorks")
 	w.Resize(windowSize)
 
-	userEntry := widget.NewEntry()
-	passEntry := widget.NewPasswordEntry()
 	targEntry := widget.NewEntry()
 	var book string
-	
-	inputContainer := draw.MakeInputContainer(userEntry, passEntry, targEntry, &book, w)
-	infoContainer := draw.MakeInfoContainer()
 
-	content := container.NewBorder(
-		nil, // top
-		nil,            // bottom
-		nil,            // left
-		nil,            // right
-		inputContainer,            // center
+	inputContainer := draw.MakeInput(targEntry, &book)
+	footerContainer := draw.MakeFooter(targEntry, &book, app)
+
+	center := container.NewBorder(
+		nil,             // top
+		footerContainer, // bottom
+		nil,             // left
+		nil,             // right
+		inputContainer,  // center
 	)
 
-	w.SetContent(content)
+	w.SetContent(center)
 	w.ShowAndRun()
 }

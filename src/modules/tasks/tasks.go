@@ -24,7 +24,6 @@ func ListAvailableBooks() ([]string, error) {
 		}
 
 		fName := f.Name()
-		log.Println(fName)
 		if isYaml(fName) {
 			fullRelPath := "./books/" + fName
 			foundBooks = append(foundBooks, fullRelPath)
