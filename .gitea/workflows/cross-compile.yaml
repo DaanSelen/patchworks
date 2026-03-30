@@ -17,7 +17,7 @@ env:
   get_pip_url: https://bootstrap.pypa.io/get-pip.py
 
 jobs:
-  prepare-meshbook:
+  prepare-linux:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -32,6 +32,35 @@ jobs:
         with:
           python-version: '3.13'
           cache: 'pip'
+
+      - name: Install python dependencies
+        run: |
+          cd ./meshbook
+
+          pip install -r ./requirements.txt
+          pip install pyinstaller
+
+          pyinstaller \
+            --onefile \
+            --name meshbook \
+            --distpath /dist \
+            meshbook.py
+
+      - name: Upload binaries as artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: linux-bin
+          path: /dist
+
+  prepare-windows:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+    steps:
+      - name: Checkout and pull the code
+        uses: actions/checkout@v6
+        with:
+          submodules: true
 
       - name: Set the Wine Windows Emulation program up
         # https://gitlab.winehq.org/wine/wine/-/wikis/Debian-Ubuntu
@@ -74,39 +103,35 @@ jobs:
           wine ./python-win/python.exe -m pip install -r ./requirements.txt
           wine ./python-win/python.exe -m pip install pyinstaller
 
-          ls -lart ./python-win/Lib/site-packages
+      - name: Compile the binary with python wine
+        run: |
+          cd ./meshbook
 
           wine ./python-win/python.exe -m PyInstaller \
             --onefile \
             --name meshbook \
-            --distpath Z:\dist \
-            meshbook.py
-
-      - name: Install python dependencies
-        run: |
-          cd ./meshbook
-
-          pip install -r ./requirements.txt
-          pip install pyinstaller
-
-          pyinstaller \
-            --onefile \
-            --name meshbook \
             --distpath /dist \
-            meshbook.py # output executable is in /dist/meshbook
-
-      - name: Show files
-        run: |
-          ls -lh /dist
+            meshbook.py
+      
+      - name: Upload binaries as artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: windows-bin
+          path: /dist
 
   compile-linux:
     runs-on: ubuntu-latest
-    needs: prepare-meshbook
+    needs: prepare-linux
     strategy:
       fail-fast: false
     steps:
       - name: Checkout and pull the code
         uses: actions/checkout@v6
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v5
+        with:
+          name: linux-bin
 
       - name: Setup the Go programming language
         uses: actions/setup-go@v6
@@ -135,25 +160,30 @@ jobs:
             export CXX=g++
             export GOOS=linux
             export GOARCH=amd64
-            go build -o ./raspscreen ./src
+            go build -o ./patchworks ./src
 
       - name: upload the building actifacts
         uses: actions/upload-artifact@v3
         with:
           name: package-linux64
           path: |
-            ./raspscreen
+            ./patchworks
           retention-days: 7
           overwrite: true
 
   compile-windows:
     runs-on: ubuntu-latest
-    needs: prepare-meshbook
+    needs: prepare-windows
     strategy:
       fail-fast: false
     steps:
       - name: Checkout and pull the code
         uses: actions/checkout@v6
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v5
+        with:
+          name: windows-bin
 
       - name: Setup the Go programming language
         uses: actions/setup-go@v6
@@ -191,7 +221,7 @@ jobs:
             export CGO_LDFLAGS="-static-libgcc -static-libstdc++"
             go-winres simply --icon ./src/icon.ico --manifest gui
             mv *.syso ./src
-            go build -o ./raspscreen.exe -ldflags -H=windowsgui ./src
+            go build -o ./patchworks.exe -ldflags -H=windowsgui ./src
 
       - name: Compile the fyne application DEBUG style for Windows
         run: |
@@ -203,14 +233,13 @@ jobs:
             export CGO_LDFLAGS="-static-libgcc -static-libstdc++"
             go-winres simply --icon ./src/icon.ico --manifest gui
             mv *.syso ./src
-            go build -o ./raspscreen-debug.exe ./src
+            go build -o ./patchworks-debug.exe ./src
 
       - name: upload the building actifacts
         uses: actions/upload-artifact@v3
         with:
           name: package-win64
           path: |
-            ./raspscreen.exe
-            ./raspscreen-debug.exe
+            ./*.exe
           retention-days: 7
           overwrite: true
