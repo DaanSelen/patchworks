@@ -18,14 +18,14 @@ func MakeInputContainer(userEntry, passEntry, targEntry *widget.Entry, book *str
 	}
 
 	loginBox := container.NewVBox(
-		widget.NewLabel("Service Username"),
+		widget.NewLabel("MeshCentral Username"),
 		userEntry,
-		widget.NewLabel("Service Password"),
+		widget.NewLabel("MeshCentral Password"),
 		passEntry,
 	)
 
 	targetBox := container.NewVBox(
-		widget.NewLabel("Target Device or Group"),
+		widget.NewLabel("MeshCentral Target Device or Group"),
 		targEntry,
 	)
 
@@ -58,4 +58,8 @@ func MakeInputContainer(userEntry, passEntry, targEntry *widget.Entry, book *str
 	)
 
 	return inputBox
+}
+
+func MakeInfoContainer(book *string) *fyne.Container {
+
 }

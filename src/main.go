@@ -15,7 +15,7 @@ import (
 	_ "embed"
 )
 
-//go:embed icon.ico
+//go:embed Icon.png
 var iconData []byte
 
 func main() {
@@ -24,7 +24,7 @@ func main() {
 		return
 	}
 
-	iconResource := fyne.NewStaticResource("./src/icon.ico", iconData)
+	iconResource := fyne.NewStaticResource("./src/Icon.png", iconData)
 
 	app := app.NewWithID("nl.nerthus.patchworks")
 	app.Settings().SetTheme(theme.DefaultTheme())
@@ -37,7 +37,9 @@ func main() {
 	passEntry := widget.NewPasswordEntry()
 	targEntry := widget.NewEntry()
 	var book string
+	
 	inputContainer := draw.MakeInputContainer(userEntry, passEntry, targEntry, &book, w)
+	infoContainer := draw.MakeInfoContainer()
 
 	content := container.NewBorder(
 		nil, // top

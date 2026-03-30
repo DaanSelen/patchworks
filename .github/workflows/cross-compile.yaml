@@ -230,7 +230,7 @@ jobs:
             export CC=x86_64-w64-mingw32-gcc
             export CXX=x86_64-w64-mingw32-g++
             export CGO_LDFLAGS="-static-libgcc -static-libstdc++"
-            go-winres simply --icon ./src/icon.ico --manifest gui
+            go-winres simply --icon ./src/Icon.png --manifest gui
             mv *.syso ./src
             go build -o ./patchworks.exe -ldflags -H=windowsgui ./src
 
@@ -242,7 +242,7 @@ jobs:
             export CC=x86_64-w64-mingw32-gcc
             export CXX=x86_64-w64-mingw32-g++
             export CGO_LDFLAGS="-static-libgcc -static-libstdc++"
-            go-winres simply --icon ./src/icon.ico --manifest gui
+            go-winres simply --icon ./src/Icon.png --manifest gui
             mv *.syso ./src
             go build -o ./patchworks-debug.exe ./src
 
