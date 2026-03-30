@@ -76,19 +76,19 @@ jobs:
           #  echo -e "-----\napt-get update failed, retrying in 1s...\n-----"
           #  sleep 1
           #done
-          sudo apt update
+          sudo apt-get update
 
           mkdir -pm755 /etc/apt/keyrings
           wget -O - https://dl.winehq.org/wine-builds/winehq.key | sudo gpg --dearmor -o /etc/apt/keyrings/winehq-archive.key -
 
           sudo dpkg --add-architecture i386
-          wget -NP /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/ubuntu/dists/noble/winehq-noble.sources
+          sudo wget -NP /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/ubuntu/dists/noble/winehq-noble.sources
 
           #until apt-get update; do
           #  echo -e "-----\napt-get update failed, retrying in 1s...\n-----"
           #  sleep 1
           #done
-          sudo apt update
+          sudo apt-get update
           sudo apt-get install -y --install-recommends winehq-devel
           wine --version
 
@@ -155,7 +155,7 @@ jobs:
             #  echo -e "-----\napt-get update failed, retrying in 1s...\n-----"
             #  sleep 1s
             #done
-            sudo apt update
+            sudo apt-get update
 
             sudo apt-get install -y \
               build-essential libgl1-mesa-dev libx11-dev libxrandr-dev \
@@ -209,7 +209,7 @@ jobs:
             #  echo -e "-----\napt-get update failed, retrying in 1s...\n-----"
             #  sleep 1s
             #done
-            sudo apt update
+            sudo apt-get update
 
             sudo apt-get install -y \
               build-essential libgl1-mesa-dev libx11-dev libxrandr-dev \
