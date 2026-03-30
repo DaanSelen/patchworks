@@ -15,7 +15,7 @@ func PrepareEnvironment() (bool, error) {
 		return ok, err
 	}
 
-	log.Println("Validated or made state compliant")
+	log.Println("validated or made state compliant")
 	return true, nil
 }
 

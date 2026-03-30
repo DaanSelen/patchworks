@@ -36,7 +36,7 @@ func MakeInput(targEntry *widget.Entry, book *string) *fyne.Container {
 	)
 	bookList.OnSelected = func(id widget.ListItemID) {
 		*book = availBooks[id]
-		log.Printf("Updated selected book to: %s", *book)
+		log.Printf("updated selected book to: %s", *book)
 	}
 	bookBox := container.NewBorder(
 		widget.NewLabel("Available Books"), // top
@@ -54,7 +54,7 @@ func MakeInput(targEntry *widget.Entry, book *string) *fyne.Container {
 
 func MakeFooter(targEntry *widget.Entry, book *string, app fyne.App) *fyne.Container {
 	actionBtn := widget.NewButton("Execute", func() {
-		log.Println("Beginning execution with external binary")
+		log.Println("beginning execution with external binary")
 
 		ok, path := runner.FindMeshbookBinary()
 		if !ok {
@@ -73,7 +73,7 @@ func MakeFooter(targEntry *widget.Entry, book *string, app fyne.App) *fyne.Conta
 	)
 
 	cancelBtn := widget.NewButton("Exit", func() {
-		log.Println("Quitting")
+		log.Println("quitting")
 		app.Quit()
 	})
 	cancelWrap := container.NewGridWrap(
