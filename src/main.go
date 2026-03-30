@@ -40,11 +40,11 @@ func main() {
 	inputContainer := draw.MakeInputContainer(userEntry, passEntry, targEntry, &book, w)
 
 	content := container.NewBorder(
-		inputContainer, // top
+		nil, // top
 		nil,            // bottom
 		nil,            // left
 		nil,            // right
-		nil,            // center
+		inputContainer,            // center
 	)
 
 	w.SetContent(content)

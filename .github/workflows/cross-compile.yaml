@@ -51,7 +51,7 @@ jobs:
             meshbook.py
 
       - name: Upload binaries as artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v6
         with:
           name: bin-linux
           path: /dist
@@ -116,9 +116,9 @@ jobs:
             --name meshbook \
             --distpath /dist \
             meshbook.py
-      
+
       - name: Upload binaries as artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v6
         with:
           name: bin-windows
           path: /dist
@@ -133,7 +133,7 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Download artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v6
         with:
           name: bin-linux
           path: ./bin
@@ -168,7 +168,7 @@ jobs:
             go build -o ./patchworks ./src
 
       - name: upload the building actifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v6
         with:
           name: package-linux64
           path: |
@@ -186,7 +186,7 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Download artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v6
         with:
           name: bin-windows
           path: ./bin
@@ -242,7 +242,7 @@ jobs:
             go build -o ./patchworks-debug.exe ./src
 
       - name: upload the building actifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v6
         with:
           name: package-win64
           path: |
