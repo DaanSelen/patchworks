@@ -53,7 +53,7 @@ jobs:
       - name: Upload binaries as artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: linux-bin
+          name: bin-linux
           path: /dist
 
   prepare-windows:
@@ -120,7 +120,7 @@ jobs:
       - name: Upload binaries as artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: windows-bin
+          name: bin-windows
           path: /dist
 
   compile-linux:
@@ -135,7 +135,7 @@ jobs:
       - name: Download artifacts
         uses: actions/download-artifact@v3
         with:
-          name: linux-bin
+          name: bin-linux
           path: ./bin
 
       - name: Setup the Go programming language
@@ -188,7 +188,7 @@ jobs:
       - name: Download artifacts
         uses: actions/download-artifact@v3
         with:
-          name: windows-bin
+          name: bin-windows
           path: ./bin
 
       - name: Setup the Go programming language
