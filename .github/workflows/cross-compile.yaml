@@ -47,14 +47,14 @@ jobs:
           pyinstaller \
             --onefile \
             --name meshbook \
-            --distpath /dist \
+            --distpath ../dist \
             meshbook.py
 
       - name: Upload binaries as artifacts
         uses: actions/upload-artifact@v6
         with:
           name: bin-linux
-          path: /dist
+          path: ./dist
 
   prepare-windows:
     runs-on: ubuntu-latest
@@ -115,14 +115,14 @@ jobs:
           wine ./python-win/python.exe -m PyInstaller \
             --onefile \
             --name meshbook \
-            --distpath /dist \
+            --distpath ../dist \
             meshbook.py
 
       - name: Upload binaries as artifacts
         uses: actions/upload-artifact@v6
         with:
           name: bin-windows
-          path: /dist
+          path: ./dist
 
   compile-linux:
     runs-on: ubuntu-latest
