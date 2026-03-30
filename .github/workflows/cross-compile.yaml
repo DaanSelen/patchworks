@@ -80,13 +80,18 @@ jobs:
             export GOARCH=amd64
             go build -o ./patchworks ./src
 
+      - name: move files for upload
+        run: |
+          mv ./meshbook ./meshbook-dir
+          mv ./dist/meshbook ./meshbook
+
       - name: upload the building actifacts
         uses: actions/upload-artifact@v7
         with:
           name: package-linux64
           path: |
             ./patchworks
-            ./dist/meshbook
+            ./meshbook
           retention-days: 7
           overwrite: true
 
@@ -205,12 +210,16 @@ jobs:
             mv *.syso ./src
             go build -o ./patchworks-debug.exe ./src
 
+      - name: move files for upload
+        run: |
+          mv ./meshbook ./meshbook-dir
+          mv ./dist/meshbook.exe ./meshbook.exe
+
       - name: upload the building actifacts
         uses: actions/upload-artifact@v7
         with:
           name: package-win64
           path: |
             ./*.exe
-            ./dist/*.exe
           retention-days: 7
           overwrite: true
