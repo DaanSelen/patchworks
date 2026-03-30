@@ -1,0 +1,36 @@
+package setup
+
+const apiConf = `[meshcentral-account]
+hostname =
+username = 
+password =
+totp_secret =
+`
+
+const osCategories = `{
+    "Linux": {
+        "Debian": [
+            "Debian GNU/Linux 13 (trixie)",
+            "Debian GNU/Linux 12 (bookworm)",
+            "Debian GNU/Linux 11 (bullseye)",
+            "Debian GNU/Linux 10 (buster)"
+        ],
+        "Ubuntu": [
+            "Ubuntu 24.04.3 LTS",
+            "Ubuntu 22.04.5 LTS",
+            "Ubuntu 20.04.6 LTS"
+        ]
+    },
+    "MacOS": {
+        "Sequoia": [
+            "macOS 15.0.1"
+        ]
+    },
+    "Windows": {
+        "11": [
+            "Microsoft Windows 11 Home - 24H2/26100",
+            "Microsoft Windows 11 Pro - 24H2/26100"
+        ]
+    }
+}
+`
