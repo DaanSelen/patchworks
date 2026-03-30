@@ -26,7 +26,7 @@ func main() {
 
 	iconResource := fyne.NewStaticResource("./src/icon.ico", iconData)
 
-	app := app.NewWithID("nl.systemec.patchworks")
+	app := app.NewWithID("nl.nerthus.patchworks")
 	app.Settings().SetTheme(theme.DefaultTheme())
 	app.SetIcon(iconResource)
 
