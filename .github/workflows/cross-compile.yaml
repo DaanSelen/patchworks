@@ -72,10 +72,11 @@ jobs:
           #mv /etc/apt/sources.list.d/microsoft-prod.list
           #  /etc/apt/sources.list.d/microsoft-prod.list.disabled
 
-          until apt-get update; do
-            echo -e "-----\napt-get update failed, retrying in 1s...\n-----"
-            sleep 1
-          done
+          #until apt-get update; do
+          #  echo -e "-----\napt-get update failed, retrying in 1s...\n-----"
+          #  sleep 1
+          #done
+          sudo apt update
 
           mkdir -pm755 /etc/apt/keyrings
           wget -O - https://dl.winehq.org/wine-builds/winehq.key | sudo gpg --dearmor -o /etc/apt/keyrings/winehq-archive.key -
@@ -83,11 +84,12 @@ jobs:
           dpkg --add-architecture i386
           wget -NP /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/ubuntu/dists/noble/winehq-noble.sources
 
-          until apt-get update; do
-            echo -e "-----\napt-get update failed, retrying in 1s...\n-----"
-            sleep 1
-          done
-          apt-get install -y --install-recommends winehq-devel
+          #until apt-get update; do
+          #  echo -e "-----\napt-get update failed, retrying in 1s...\n-----"
+          #  sleep 1
+          #done
+          sudo apt update
+          sudo apt-get install -y --install-recommends winehq-devel
           wine --version
 
       - name: Install python under wine
@@ -149,12 +151,13 @@ jobs:
             #mv /etc/apt/sources.list.d/microsoft-prod.list \
             #  /etc/apt/sources.list.d/microsoft-prod.list.disabled
 
-            until apt-get update; do
-              echo -e "-----\napt-get update failed, retrying in 1s...\n-----"
-              sleep 1s
-            done
+            #until apt-get update; do
+            #  echo -e "-----\napt-get update failed, retrying in 1s...\n-----"
+            #  sleep 1s
+            #done
+            sudo apt update
 
-            apt-get install -y \
+            sudo apt-get install -y \
               build-essential libgl1-mesa-dev libx11-dev libxrandr-dev \
               libxi-dev libxcursor-dev libxinerama-dev libglfw3-dev \
               libxxf86vm-dev
@@ -199,15 +202,16 @@ jobs:
 
       - name: Install build dependencies
         run: |
-            mv /etc/apt/sources.list.d/microsoft-prod.list \
-              /etc/apt/sources.list.d/microsoft-prod.list.disabled
+            #mv /etc/apt/sources.list.d/microsoft-prod.list \
+            #  /etc/apt/sources.list.d/microsoft-prod.list.disabled
 
-            until apt-get update; do
-              echo -e "-----\napt-get update failed, retrying in 1s...\n-----"
-              sleep 1s
-            done
+            #until apt-get update; do
+            #  echo -e "-----\napt-get update failed, retrying in 1s...\n-----"
+            #  sleep 1s
+            #done
+            sudo apt update
 
-            apt-get install -y \
+            sudo apt-get install -y \
               build-essential libgl1-mesa-dev libx11-dev libxrandr-dev \
               libxi-dev libxcursor-dev libxinerama-dev libglfw3-dev \
               libxxf86vm-dev gcc-mingw-w64 gcc-multilib
