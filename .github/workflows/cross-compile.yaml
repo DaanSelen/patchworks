@@ -69,7 +69,8 @@ jobs:
       - name: Set the Wine Windows Emulation program up
         # https://gitlab.winehq.org/wine/wine/-/wikis/Debian-Ubuntu
         run: |
-          mv /etc/apt/sources.list.d/microsoft-prod.list /etc/apt/sources.list.d/microsoft-prod.list.disabled
+          #mv /etc/apt/sources.list.d/microsoft-prod.list
+          #  /etc/apt/sources.list.d/microsoft-prod.list.disabled
 
           until apt-get update; do
             echo -e "-----\napt-get update failed, retrying in 1s...\n-----"
@@ -145,8 +146,8 @@ jobs:
 
       - name: Install build dependencies
         run: |
-            mv /etc/apt/sources.list.d/microsoft-prod.list \
-              /etc/apt/sources.list.d/microsoft-prod.list.disabled
+            #mv /etc/apt/sources.list.d/microsoft-prod.list \
+            #  /etc/apt/sources.list.d/microsoft-prod.list.disabled
 
             until apt-get update; do
               echo -e "-----\napt-get update failed, retrying in 1s...\n-----"
