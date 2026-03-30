@@ -17,7 +17,7 @@ env:
   get_pip_url: https://bootstrap.pypa.io/get-pip.py
 
 jobs:
-  prepare-linux:
+  compile-linux:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -50,13 +50,47 @@ jobs:
             --distpath ../dist \
             meshbook.py
 
-      - name: Upload binaries as artifacts
+      - name: Setup the Go programming language
+        uses: actions/setup-go@v6
+        with:
+          go-version: 'stable'
+
+      - name: Install build dependencies
+        run: |
+            #mv /etc/apt/sources.list.d/microsoft-prod.list \
+            #  /etc/apt/sources.list.d/microsoft-prod.list.disabled
+
+            #until apt-get update; do
+            #  echo -e "-----\napt-get update failed, retrying in 1s...\n-----"
+            #  sleep 1s
+            #done
+            sudo apt-get update
+
+            sudo apt-get install -y \
+              build-essential libgl1-mesa-dev libx11-dev libxrandr-dev \
+              libxi-dev libxcursor-dev libxinerama-dev libglfw3-dev \
+              libxxf86vm-dev
+
+      - name: Compile the fyne application for native Linux
+        run: |
+            export CGO_ENABLED=1
+            export CC=gcc
+            export CXX=g++
+            export GOOS=linux
+            export GOARCH=amd64
+            go build -o ./patchworks ./src
+
+      - name: upload the building actifacts
         uses: actions/upload-artifact@v7
         with:
-          name: bin-linux
-          path: ./dist
+          name: package-linux64
+          path: |
+            ./patchworks
+            ./dist/meshbook
+          retention-days: 7
+          overwrite: true
 
-  prepare-windows:
+  compile-windows:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -120,81 +154,6 @@ jobs:
             --distpath ../dist \
             meshbook.py
 
-      - name: Upload binaries as artifacts
-        uses: actions/upload-artifact@v7
-        with:
-          name: bin-windows
-          path: ./dist
-
-  compile-linux:
-    runs-on: ubuntu-latest
-    needs: prepare-linux
-    strategy:
-      fail-fast: false
-    steps:
-      - name: Checkout and pull the code
-        uses: actions/checkout@v6
-
-      - name: Download artifacts
-        uses: actions/download-artifact@v8
-        with:
-          name: bin-linux
-          path: ./bin
-
-      - name: Setup the Go programming language
-        uses: actions/setup-go@v6
-        with:
-          go-version: 'stable'
-
-      - name: Install build dependencies
-        run: |
-            #mv /etc/apt/sources.list.d/microsoft-prod.list \
-            #  /etc/apt/sources.list.d/microsoft-prod.list.disabled
-
-            #until apt-get update; do
-            #  echo -e "-----\napt-get update failed, retrying in 1s...\n-----"
-            #  sleep 1s
-            #done
-            sudo apt-get update
-
-            sudo apt-get install -y \
-              build-essential libgl1-mesa-dev libx11-dev libxrandr-dev \
-              libxi-dev libxcursor-dev libxinerama-dev libglfw3-dev \
-              libxxf86vm-dev
-
-      - name: Compile the fyne application for native Linux
-        run: |
-            export CGO_ENABLED=1
-            export CC=gcc
-            export CXX=g++
-            export GOOS=linux
-            export GOARCH=amd64
-            go build -o ./patchworks ./src
-
-      - name: upload the building actifacts
-        uses: actions/upload-artifact@v7
-        with:
-          name: package-linux64
-          path: |
-            ./patchworks
-          retention-days: 7
-          overwrite: true
-
-  compile-windows:
-    runs-on: ubuntu-latest
-    needs: prepare-windows
-    strategy:
-      fail-fast: false
-    steps:
-      - name: Checkout and pull the code
-        uses: actions/checkout@v6
-
-      - name: Download artifacts
-        uses: actions/download-artifact@v8
-        with:
-          name: bin-windows
-          path: ./bin
-
       - name: Setup the Go programming language
         uses: actions/setup-go@v6
         with:
@@ -252,5 +211,6 @@ jobs:
           name: package-win64
           path: |
             ./*.exe
+            ./dist/*.exe
           retention-days: 7
           overwrite: true
