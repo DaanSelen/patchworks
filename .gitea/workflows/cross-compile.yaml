@@ -40,6 +40,10 @@ jobs:
           pip install -r ./requirements.txt
           pip install pyinstaller
 
+      - name: Compile the python binary
+        run: |
+          cd ./meshbook
+
           pyinstaller \
             --onefile \
             --name meshbook \
