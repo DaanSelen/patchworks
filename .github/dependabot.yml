@@ -15,12 +15,12 @@ updates:
     schedule:
       interval: "weekly"
 
-  - package-ecosystem: "docker"
-    directory: "/docker"
-    schedule:
-      interval: "weekly"
+#  - package-ecosystem: "docker"
+#    directory: "/docker"
+#    schedule:
+#      interval: "weekly"
 
-  - package-ecosystem: "docker-compose"
-    directory: "/docker"
-    schedule:
-      interval: "weekly"
+#  - package-ecosystem: "docker-compose"
+#    directory: "/docker"
+#    schedule:
+#      interval: "weekly"
