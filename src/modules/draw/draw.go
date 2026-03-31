@@ -44,11 +44,15 @@ func MakeInput(targEntry *widget.Entry, book *string) *fyne.Container {
 		bookList, // center fills
 	)
 
-	inputBox := container.New(
-		layout.NewGridLayoutWithColumns(2),
-		targetBox, // column 1
-		bookBox,   // column 2
+	inputBox := container.NewVBox(
+		targetBox,
+		bookBox,
 	)
+	//inputBox := container.New(
+	//	layout.NewGridLayoutWithColumns(2),
+	//	targetBox, // column 1
+	//	bookBox,   // column 2
+	//)
 	return inputBox
 }
 
