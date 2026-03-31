@@ -47,7 +47,7 @@ func RunMeshbook(binPath, bookPath, targGroup string) (bool, string) {
 	if len(bookPath) == 0 {
 		args = []string{"--help"}
 	} else {
-		args = []string{"--nograce", "--indent", "--silent", "-mb", bookPath, "--group", targGroup}
+		args = []string{"--nograce", "--indent", "-mb", bookPath, "--group", targGroup}
 	}
 	log.Printf("running with parameters: %v", args)
 
