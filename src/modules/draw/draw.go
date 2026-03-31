@@ -53,6 +53,26 @@ func MakeInput(targEntry *widget.Entry, book *string) *fyne.Container {
 }
 
 func MakeFooter(targEntry *widget.Entry, book *string, app fyne.App) *fyne.Container {
+	var result string
+
+	showBtn := widget.NewButton("Show Results", func() {
+		log.Println("showing output")
+
+		w := app.NewWindow("Result Display")
+		w.Resize(windowSize)
+
+		textEntry := widget.NewMultiLineEntry()
+		textEntry.SetText(result)
+
+		w.SetContent(container.NewScroll(textEntry))
+		w.Show()
+	})
+	showWrap := container.NewGridWrap(
+		buttonSize,
+		showBtn,
+	)
+	showBtn.Disable()
+
 	actionBtn := widget.NewButton("Execute", func() {
 		log.Println("beginning execution with external binary")
 
@@ -60,11 +80,11 @@ func MakeFooter(targEntry *widget.Entry, book *string, app fyne.App) *fyne.Conta
 		if !ok {
 			log.Println("something went wrong while looking for the binary, see above for details")
 		}
-		ok, result := runner.RunMeshbook(path, *book, targEntry.Text)
+		ok, result = runner.RunMeshbook(path, *book, targEntry.Text)
 		if !ok {
 			log.Println("something went wrong while running the meshbook, see above for details")
 		}
-		log.Println(result)
+		showBtn.Enable()
 
 	})
 	actionWrap := container.NewGridWrap(
@@ -82,7 +102,8 @@ func MakeFooter(targEntry *widget.Entry, book *string, app fyne.App) *fyne.Conta
 	)
 
 	bottomBox := container.NewHBox(
-		actionWrap,         // left
+		actionWrap, // left
+		showWrap,
 		layout.NewSpacer(), // flexible space
 		cancelWrap,         // right
 	)

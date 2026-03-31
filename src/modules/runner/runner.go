@@ -37,6 +37,7 @@ func FindMeshbookBinary() (bool, string) {
 	if binaryFound {
 		return true, binaryPath
 	} else {
+		log.Println("binary not found!")
 		return false, ""
 	}
 }
@@ -46,18 +47,17 @@ func RunMeshbook(binPath, bookPath, targGroup string) (bool, string) {
 	if len(bookPath) == 0 {
 		args = []string{"--help"}
 	} else {
-		args = []string{"--nograce", "-mb", bookPath, "--group", targGroup}
+		args = []string{"--nograce", "--silent", "-mb", bookPath, "--group", targGroup}
 	}
 	log.Printf("running with parameters: %v", args)
 
 	cmd := exec.Command(binPath, args...)
-	cOut, err := cmd.CombinedOutput()
+	outputData, err := cmd.CombinedOutput()
 	if err != nil {
 		log.Printf("something went wrong when running the command: %v", err)
-		log.Printf("captured output: %s", string(cOut))
-		return false, ""
+		log.Printf("captured output: %s", string(outputData))
+		return false, string(outputData)
 	}
 
-	log.Printf("captured output: %s", string(cOut))
-	return true, ""
+	return true, string(outputData)
 }
