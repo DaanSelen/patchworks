@@ -76,13 +76,17 @@ func MakeFooter(targEntry *widget.Entry, book *string, app fyne.App) *fyne.Conta
 		if !ok {
 			log.Println("something went wrong while looking for the binary, see above for details")
 		}
-		ok, result = runner.RunMeshbook(path, *book, targEntry.Text)
-		if !ok {
-			log.Println("something went wrong while running the meshbook, see above for details")
-		}
-		log.Println(result)
-		textEntry.SetText(result)
-		showBtn.Enable()
+
+		log.Println("kicking off goroutine")
+		go func() {
+			ok, result = runner.RunMeshbook(path, *book, targEntry.Text)
+			if !ok {
+				log.Println("something went wrong while running the meshbook, see above for details")
+			}
+			log.Println(result)
+			textEntry.SetText(result)
+			showBtn.Enable()
+		}()
 
 	})
 	actionWrap := container.NewGridWrap(
