@@ -40,9 +40,7 @@ func fsCheck() (bool, error) {
 // Basic state
 func ensState() (bool, error) {
 	files := []string{"./api.conf", "./os_categories.json",
-		"./books/rdpCheck.yaml",
 		"./books/updateAptCache.yaml", "./books/updateOs.yaml",
-		"./books/enableVncConsent.yaml", "./books/disableVncConsent.yaml",
 	}
 
 	failedState := false
@@ -56,16 +54,10 @@ func ensState() (bool, error) {
 				err = os.WriteFile(f, []byte(apiConf), 0644)
 			case "./os_categories.json":
 				err = os.WriteFile(f, []byte(osCategories), 0644)
-			case "./books/rdpCheck.yaml":
-				err = os.WriteFile(f, []byte(rdpCheck), 0644)
 			case "./books/updateAptCache.yaml":
 				err = os.WriteFile(f, []byte(updateAptCache), 0644)
 			case "./books/updateOs.yaml":
 				err = os.WriteFile(f, []byte(updateOs), 0644)
-			case "./books/enableVncConsent.yaml":
-				err = os.WriteFile(f, []byte(enableVncConsent), 0644)
-			case "./books/disableVncConsent.yaml":
-				err = os.WriteFile(f, []byte(disableVncConsent), 0644)
 			default:
 				log.Println("no template defined for this file... not making it")
 			}

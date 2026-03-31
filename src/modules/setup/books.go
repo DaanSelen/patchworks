@@ -1,51 +1,5 @@
 package setup
 
-const rdpCheck = `---
-name: rdpCheck
-target_os: "Linux"
-tasks:
-  - name: Check RDP
-    command: "ps -aux | grep rdp | grep -v grep"
-`
-
-const enableVncConsent = `---
-name: enableVncConsent
-target_os: "Debian"
-target_tag: "Linux-ThinClient"
-variables:
-  - name: service-file
-    value: /etc/systemd/system/x11vnc.service
-tasks:
-  - name: edit x11vnc.service
-    command: >
-      sed -i "s|ExecStart=/usr/bin/x11vnc.*|ExecStart=/usr/bin/x11vnc -xkb
-      -noxrecord -noxfixes -noxdamage -display :0 -auth /home/user/.Xauthority
-      -ncache 0 -nopw -accept 'popup'|" {{ service-file }}
-  - name: systemctl daemon-reload
-    command: systemctl daemon-reload
-  - name: systemctl restart
-    command: systemctl restart x11vnc
-`
-
-const disableVncConsent = `---
-name: disableVncConsent
-target_os: "Debian"
-target_tag: "Linux-ThinClient"
-variables:
-  - name: service-file
-    value: /etc/systemd/system/x11vnc.service
-tasks:
-  - name: edit x11vnc.service
-    command: >
-      sed -i "s|ExecStart=/usr/bin/x11vnc.*|ExecStart=/usr/bin/x11vnc -xkb
-      -noxrecord -noxfixes -noxdamage -display :0 -auth /home/user/.Xauthority
-      -ncache 0 -nopw|" {{ service-file }}
-  - name: systemctl daemon-reload
-    command: systemctl daemon-reload
-  - name: systemctl restart
-    command: systemctl restart x11vnc
-`
-
 const updateAptCache = `---
 name: updateAptCache
 target_os: "Linux"
