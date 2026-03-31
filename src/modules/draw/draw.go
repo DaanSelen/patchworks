@@ -54,15 +54,11 @@ func MakeInput(targEntry *widget.Entry, book *string) *fyne.Container {
 
 func MakeFooter(targEntry *widget.Entry, book *string, app fyne.App) *fyne.Container {
 	var result string
+	textEntry := widget.NewMultiLineEntry()
 
 	showBtn := widget.NewButton("Show Results", func() {
-		log.Println("showing output")
-
 		w := app.NewWindow("Result Display")
 		w.Resize(windowSize)
-
-		textEntry := widget.NewMultiLineEntry()
-		textEntry.SetText(result)
 
 		w.SetContent(container.NewScroll(textEntry))
 		w.Show()
@@ -84,6 +80,8 @@ func MakeFooter(targEntry *widget.Entry, book *string, app fyne.App) *fyne.Conta
 		if !ok {
 			log.Println("something went wrong while running the meshbook, see above for details")
 		}
+		log.Println(result)
+		textEntry.SetText(result)
 		showBtn.Enable()
 
 	})
