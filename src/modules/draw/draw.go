@@ -69,7 +69,13 @@ func MakeFooter(targEntry *widget.Entry, book *string, app fyne.App) *fyne.Conta
 	)
 	showBtn.Disable()
 
-	actionBtn := widget.NewButton("Execute", func() {
+	var actionBtn *widget.Button
+	actionBtn = widget.NewButton("Execute", func() {
+		showBtn.Disable()
+
+		actionBtn.Importance = widget.HighImportance
+		actionBtn.Refresh()
+
 		log.Println("beginning execution with external binary")
 
 		ok, path := runner.FindMeshbookBinary()
@@ -78,17 +84,28 @@ func MakeFooter(targEntry *widget.Entry, book *string, app fyne.App) *fyne.Conta
 		}
 
 		log.Println("kicking off goroutine")
+		actionBtn.Disable()
 		go func() {
 			ok, result = runner.RunMeshbook(path, *book, targEntry.Text)
 			if !ok {
+				fyne.CurrentApp().Driver().DoFromGoroutine(func() {
+					actionBtn.Importance = widget.DangerImportance
+					actionBtn.Refresh()
+				}, true)
+
 				log.Println("something went wrong while running the meshbook, see above for details")
 			}
 			log.Println(result)
 
 			fyne.CurrentApp().Driver().DoFromGoroutine(func() {
 				textEntry.SetText(result)
+
+				actionBtn.Importance = widget.SuccessImportance
+				actionBtn.Refresh()
+
 				showBtn.Enable()
 			}, true)
+			actionBtn.Enable()
 		}()
 
 	})
