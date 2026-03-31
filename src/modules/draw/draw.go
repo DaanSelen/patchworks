@@ -84,8 +84,11 @@ func MakeFooter(targEntry *widget.Entry, book *string, app fyne.App) *fyne.Conta
 				log.Println("something went wrong while running the meshbook, see above for details")
 			}
 			log.Println(result)
-			textEntry.SetText(result)
-			showBtn.Enable()
+
+			fyne.CurrentApp().Driver().DoFromGoroutine(func() {
+				textEntry.SetText(result)
+				showBtn.Enable()
+			}, true)
 		}()
 
 	})
