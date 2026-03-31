@@ -105,7 +105,9 @@ func MakeFooter(targEntry *widget.Entry, book *string, app fyne.App) *fyne.Conta
 
 				showBtn.Enable()
 			}, true)
-			actionBtn.Enable()
+			fyne.CurrentApp().Driver().DoFromGoroutine(func() {
+				actionBtn.Enable()
+			}, true)
 		}()
 
 	})
