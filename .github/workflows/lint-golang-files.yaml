@@ -1,5 +1,5 @@
 ---
-name: Lint_CI_CD
+name: Lint Golang Files
 
 "on":
   # Manual trigger.
