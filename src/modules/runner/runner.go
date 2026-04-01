@@ -4,8 +4,11 @@ import (
 	"log"
 	"os"
 	"os/exec"
+	"regexp"
 	"runtime"
 )
+
+var ansi = regexp.MustCompile(`\x1b\[[0-9;]*m`)
 
 func FindMeshbookBinary() (bool, string) {
 	var osBin string
@@ -53,11 +56,14 @@ func RunMeshbook(binPath, bookPath, targGroup string) (bool, string) {
 
 	cmd := exec.Command(binPath, args...)
 	outputData, err := cmd.CombinedOutput()
+	cleanData := ansi.ReplaceAllString(string(outputData), "")
+
 	if err != nil {
 		log.Printf("something went wrong when running the command: %v", err)
-		log.Printf("captured output: %s", string(outputData))
-		return false, string(outputData)
-	}
+		log.Printf("captured output: %s", cleanData)
 
-	return true, string(outputData)
+		return false, cleanData
+	} else {
+		return true, cleanData
+	}
 }
