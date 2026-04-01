@@ -31,15 +31,16 @@ jobs:
 
       - name: install Fyne deps for golang lint
         run: |
-          mv /etc/apt/sources.list.d/microsoft-prod.list \
-            /etc/apt/sources.list.d/microsoft-prod.list.disabled
+          #mv /etc/apt/sources.list.d/microsoft-prod.list \
+          #  /etc/apt/sources.list.d/microsoft-prod.list.disabled
 
-          until apt-get update; do
-            echo -e "-----\napt-get update failed, retrying in 1s...\n-----"
-            sleep 1s
-          done
+          #until apt-get update; do
+          #  echo -e "-----\napt-get update failed, retrying in 1s...\n-----"
+          #  sleep 1s
+          #done
+          sudo apt-get update
 
-          apt-get install -y libgl1-mesa-dev xorg-dev
+          sudo apt-get install -y libgl1-mesa-dev xorg-dev
 
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v9
