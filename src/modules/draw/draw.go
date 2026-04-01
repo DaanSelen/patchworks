@@ -22,6 +22,7 @@ func MakeInput(targEntry *widget.Entry, book *string) *fyne.Container {
 	targetBox := container.NewVBox(
 		widget.NewLabel("MeshCentral Target Group"),
 		targEntry,
+		widget.NewLabel(""),
 		canvas.NewLine(color.Gray{Y: 128}),
 	)
 
