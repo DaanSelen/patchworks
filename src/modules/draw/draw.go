@@ -1,9 +1,11 @@
 package draw
 
 import (
+	"image/color"
 	"log"
 
 	"fyne.io/fyne/v2"
+	"fyne.io/fyne/v2/canvas"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/widget"
 
@@ -20,6 +22,7 @@ func MakeInput(targEntry *widget.Entry, book *string) *fyne.Container {
 	targetBox := container.NewVBox(
 		widget.NewLabel("MeshCentral Target Group"),
 		targEntry,
+		canvas.NewLine(color.Gray{Y: 128}),
 	)
 
 	bookList := widget.NewList(
@@ -48,15 +51,6 @@ func MakeInput(targEntry *widget.Entry, book *string) *fyne.Container {
 		nil, nil, nil,
 		bookBox,
 	)
-	//inputBox := container.NewVBox(
-	//	targetBox,
-	//	bookBox,
-	//)
-	//inputBox := container.New(
-	//	layout.NewGridLayoutWithColumns(2),
-	//	targetBox, // column 1
-	//	bookBox,   // column 2
-	//)
 	return inputBox
 }
 
