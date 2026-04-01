@@ -9,6 +9,7 @@ name: Cross-Compile Binaries
     paths:
       - 'src/**'
       - 'go.**'
+      - 'meshbook/**'
   schedule:
     - cron: '0 0 * * 6'
 
