@@ -1,3 +1,6 @@
+//go:build windows
+// +build windows
+
 package runner
 
 import (
@@ -6,6 +9,7 @@ import (
 	"os/exec"
 	"regexp"
 	"runtime"
+	"syscall"
 )
 
 var ansi = regexp.MustCompile(`\x1b\[[0-9;]*m`)
@@ -55,6 +59,10 @@ func RunMeshbook(binPath, bookPath, targGroup string) (bool, string) {
 	log.Printf("running with parameters: %v", args)
 
 	cmd := exec.Command(binPath, args...)
+	cmd.SysProcAttr = &syscall.SysProcAttr{
+		HideWindow: true,
+	}
+
 	outputData, err := cmd.CombinedOutput()
 	cleanData := ansi.ReplaceAllString(string(outputData), "")
 

@@ -196,7 +196,7 @@ jobs:
             export CGO_LDFLAGS="-static-libgcc -static-libstdc++"
             go-winres simply --icon ./src/Icon.png --manifest gui
             mv *.syso ./src
-            go build -o ./patchworks.exe -ldflags -H=windowsgui ./src
+            go build -o ./patchworks.exe -tags "windows" -ldflags -H=windowsgui ./src
 
       - name: Compile the fyne application DEBUG style for Windows
         run: |
