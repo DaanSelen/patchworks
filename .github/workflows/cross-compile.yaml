@@ -83,7 +83,8 @@ jobs:
       - name: move files for upload
         run: |
           mv ./meshbook ./meshbook-dir
-          mv ./dist/meshbook ./meshbook
+          mkdir ./bin
+          mv ./dist/meshbook ./bin/meshbook
 
       - name: upload the building actifacts
         uses: actions/upload-artifact@v7
@@ -91,7 +92,7 @@ jobs:
           name: package-linux64
           path: |
             ./patchworks
-            ./meshbook
+            ./bin/meshbook
           retention-days: 7
           overwrite: true
 
@@ -213,7 +214,8 @@ jobs:
       - name: move files for upload
         run: |
           mv ./meshbook ./meshbook-dir
-          mv ./dist/meshbook.exe ./meshbook.exe
+          mkdir ./bin
+          mv ./dist/meshbook.exe ./bin/meshbook.exe
 
       - name: upload the building actifacts
         uses: actions/upload-artifact@v7
@@ -221,5 +223,6 @@ jobs:
           name: package-win64
           path: |
             ./*.exe
+            ./bin/*.exe
           retention-days: 7
           overwrite: true
