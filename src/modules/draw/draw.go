@@ -5,7 +5,6 @@ import (
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/container"
-	"fyne.io/fyne/v2/layout"
 	"fyne.io/fyne/v2/widget"
 
 	runner "patchworks/src/modules/runner"
@@ -44,10 +43,15 @@ func MakeInput(targEntry *widget.Entry, book *string) *fyne.Container {
 		bookList, // center fills
 	)
 
-	inputBox := container.NewVBox(
+	inputBox := container.NewBorder(
 		targetBox,
+		nil, nil, nil,
 		bookBox,
 	)
+	//inputBox := container.NewVBox(
+	//	targetBox,
+	//	bookBox,
+	//)
 	//inputBox := container.New(
 	//	layout.NewGridLayoutWithColumns(2),
 	//	targetBox, // column 1
@@ -92,26 +96,30 @@ func MakeFooter(targEntry *widget.Entry, book *string, app fyne.App) *fyne.Conta
 		go func() {
 			ok, result = runner.RunMeshbook(path, *book, targEntry.Text)
 			if !ok {
+				log.Println("assuming failed state")
 				fyne.CurrentApp().Driver().DoFromGoroutine(func() {
 					actionBtn.Importance = widget.DangerImportance
 					actionBtn.Refresh()
 				}, true)
 
-				log.Println("something went wrong while running the meshbook, see above for details")
+			} else {
+				fyne.CurrentApp().Driver().DoFromGoroutine(func() {
+					textEntry.SetText(result)
+
+					actionBtn.Importance = widget.SuccessImportance
+					actionBtn.Refresh()
+
+					showBtn.Enable()
+				}, true)
 			}
-			log.Println(result)
 
-			fyne.CurrentApp().Driver().DoFromGoroutine(func() {
-				textEntry.SetText(result)
-
-				actionBtn.Importance = widget.SuccessImportance
-				actionBtn.Refresh()
-
-				showBtn.Enable()
-			}, true)
 			fyne.CurrentApp().Driver().DoFromGoroutine(func() {
 				actionBtn.Enable()
 			}, true)
+
+			if len(result) > 0 {
+				log.Println(result)
+			}
 		}()
 
 	})
@@ -132,8 +140,8 @@ func MakeFooter(targEntry *widget.Entry, book *string, app fyne.App) *fyne.Conta
 	bottomBox := container.NewHBox(
 		actionWrap, // left
 		showWrap,
-		layout.NewSpacer(), // flexible space
-		cancelWrap,         // right
+		//layout.NewSpacer(), // flexible space
+		cancelWrap, // right
 	)
 	return bottomBox
 }
