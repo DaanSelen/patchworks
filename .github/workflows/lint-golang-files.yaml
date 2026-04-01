@@ -1,0 +1,47 @@
+---
+name: Lint_CI_CD
+
+"on":
+  # Manual trigger.
+  "workflow_dispatch":
+  push:
+    branches:
+      - '*'
+    paths:
+      - 'src/**/*.go'
+      - '**/go.*'
+  pull_request:
+    branches:
+      - '*'
+
+jobs:
+  golang-lint:
+    name: 'Golang-Lint'
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Check out the repository locally'
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          lfs: false
+
+      - uses: actions/setup-go@v6
+        with:
+          go-version: 1.26
+
+      - name: install Fyne deps for golang lint
+        run: |
+          mv /etc/apt/sources.list.d/microsoft-prod.list \
+            /etc/apt/sources.list.d/microsoft-prod.list.disabled
+
+          until apt-get update; do
+            echo -e "-----\napt-get update failed, retrying in 1s...\n-----"
+            sleep 1s
+          done
+
+          apt-get install -y libgl1-mesa-dev xorg-dev
+
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v9
+        with:
+          version: v2.11.4
