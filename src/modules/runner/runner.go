@@ -68,12 +68,15 @@ func RunMeshbook(binPath, bookPath string, silent bool, targGroup string) (bool,
 	outputData, err := cmd.CombinedOutput()
 	cleanData := ansi.ReplaceAllString(string(outputData), "")
 
+	log.Println("evaluating returned state")
 	if err != nil {
 		log.Printf("something went wrong when running the command: %v", err)
 		log.Printf("captured output: %s", cleanData)
 
 		return false, cleanData
 	} else {
+		log.Printf("captured output: %s", cleanData)
+
 		return true, cleanData
 	}
 }
