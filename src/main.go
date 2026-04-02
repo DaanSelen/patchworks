@@ -35,9 +35,10 @@ func main() {
 
 	targEntry := widget.NewEntry()
 	var book string
+	var silent bool
 
-	inputContainer := draw.MakeInput(targEntry, &book)
-	footerContainer := draw.MakeFooter(targEntry, &book, app)
+	inputContainer := draw.MakeInput(targEntry, &book, &silent)
+	footerContainer := draw.MakeFooter(targEntry, &book, &silent, app)
 
 	center := container.NewBorder(
 		nil,             // top

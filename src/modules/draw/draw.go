@@ -13,15 +13,24 @@ import (
 	tasks "patchworks/src/modules/tasks"
 )
 
-func MakeInput(targEntry *widget.Entry, book *string) *fyne.Container {
+func MakeInput(targEntry *widget.Entry, book *string, silent *bool) *fyne.Container {
 	availBooks, err := tasks.ListAvailableBooks()
 	if err != nil {
 		log.Println("failed to read available books on disk")
 	}
 
+	silentCheck := widget.NewCheck("Silent (Return Only JSON Data)", func(checked bool) {
+		if checked {
+			*silent = true
+		} else {
+			*silent = false
+		}
+	})
+
 	targetBox := container.NewVBox(
 		widget.NewLabel("MeshCentral Target Group"),
 		targEntry,
+		silentCheck,
 		widget.NewLabel(""),
 		canvas.NewLine(color.Gray{Y: 128}),
 	)
@@ -55,7 +64,7 @@ func MakeInput(targEntry *widget.Entry, book *string) *fyne.Container {
 	return inputBox
 }
 
-func MakeFooter(targEntry *widget.Entry, book *string, app fyne.App) *fyne.Container {
+func MakeFooter(targEntry *widget.Entry, book *string, silent *bool, app fyne.App) *fyne.Container {
 	var result string
 	textEntry := widget.NewMultiLineEntry()
 
@@ -89,7 +98,7 @@ func MakeFooter(targEntry *widget.Entry, book *string, app fyne.App) *fyne.Conta
 		log.Println("kicking off goroutine")
 		actionBtn.Disable()
 		go func() {
-			ok, result = runner.RunMeshbook(path, *book, targEntry.Text)
+			ok, result = runner.RunMeshbook(path, *book, *silent, targEntry.Text)
 			if !ok {
 				log.Println("assuming failed state")
 				fyne.CurrentApp().Driver().DoFromGoroutine(func() {

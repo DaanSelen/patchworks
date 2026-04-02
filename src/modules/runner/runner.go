@@ -45,17 +45,26 @@ func FindMeshbookBinary() (bool, string) {
 	}
 }
 
-func RunMeshbook(binPath, bookPath, targGroup string) (bool, string) {
+func RunMeshbook(binPath, bookPath string, silent bool, targGroup string) (bool, string) {
+	// Meshbook argument compilation
 	var args []string
 	if len(bookPath) == 0 {
 		args = []string{"--help"}
 	} else {
 		args = []string{"--nograce", "--indent", "-mb", bookPath, "--group", targGroup}
 	}
+
+	if silent {
+		args = append(args, "--silent")
+	}
+
+	// Display what we are about to be running
 	log.Printf("running with parameters: %v", args)
 
+	// Actually spawn the process
 	cmd := exec.Command(binPath, args...)
 
+	// Capture stdout & stderr
 	outputData, err := cmd.CombinedOutput()
 	cleanData := ansi.ReplaceAllString(string(outputData), "")
 
