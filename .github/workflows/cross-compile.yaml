@@ -58,13 +58,6 @@ jobs:
 
       - name: Install build dependencies
         run: |
-            #mv /etc/apt/sources.list.d/microsoft-prod.list \
-            #  /etc/apt/sources.list.d/microsoft-prod.list.disabled
-
-            #until apt-get update; do
-            #  echo -e "-----\napt-get update failed, retrying in 1s...\n-----"
-            #  sleep 1s
-            #done
             sudo apt-get update
 
             sudo apt-get install -y \
@@ -88,7 +81,7 @@ jobs:
           mv ./dist/meshbook ./bin/meshbook
 
       - name: upload the building actifacts
-        uses: actions/upload-artifact@v7
+        uses: https://gitea.com/actions/gitea-upload-artifact@main
         with:
           name: package-linux64
           path: |
@@ -110,13 +103,6 @@ jobs:
       - name: Set the Wine Windows Emulation program up
         # https://gitlab.winehq.org/wine/wine/-/wikis/Debian-Ubuntu
         run: |
-          #mv /etc/apt/sources.list.d/microsoft-prod.list
-          #  /etc/apt/sources.list.d/microsoft-prod.list.disabled
-
-          #until apt-get update; do
-          #  echo -e "-----\napt-get update failed, retrying in 1s...\n-----"
-          #  sleep 1
-          #done
           sudo apt-get update
 
           mkdir -pm755 /etc/apt/keyrings
@@ -125,10 +111,6 @@ jobs:
           sudo dpkg --add-architecture i386
           sudo wget -NP /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/ubuntu/dists/noble/winehq-noble.sources
 
-          #until apt-get update; do
-          #  echo -e "-----\napt-get update failed, retrying in 1s...\n-----"
-          #  sleep 1
-          #done
           sudo apt-get update
           sudo apt-get install -y --install-recommends winehq-devel
           wine --version
@@ -168,13 +150,6 @@ jobs:
 
       - name: Install build dependencies
         run: |
-            #mv /etc/apt/sources.list.d/microsoft-prod.list \
-            #  /etc/apt/sources.list.d/microsoft-prod.list.disabled
-
-            #until apt-get update; do
-            #  echo -e "-----\napt-get update failed, retrying in 1s...\n-----"
-            #  sleep 1s
-            #done
             sudo apt-get update
 
             sudo apt-get install -y \
@@ -219,7 +194,7 @@ jobs:
           mv ./dist/meshbook.exe ./bin/meshbook.exe
 
       - name: upload the building actifacts
-        uses: actions/upload-artifact@v7
+        uses: https://gitea.com/actions/gitea-upload-artifact@main
         with:
           name: package-win64
           path: |
