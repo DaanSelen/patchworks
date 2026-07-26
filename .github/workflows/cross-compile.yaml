@@ -29,7 +29,7 @@ jobs:
           submodules: true
 
       - name: Set the Python programming language
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@v7
         with:
           python-version: '3.14'
           cache: 'pip'
@@ -52,7 +52,7 @@ jobs:
             meshbook.py
 
       - name: Setup the Go programming language
-        uses: actions/setup-go@v6
+        uses: actions/setup-go@v7
         with:
           go-version: 'stable'
 
@@ -144,7 +144,7 @@ jobs:
             meshbook.py
 
       - name: Setup the Go programming language
-        uses: actions/setup-go@v6
+        uses: actions/setup-go@v7
         with:
           go-version: 'stable'
 
